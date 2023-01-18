@@ -1,0 +1,39 @@
+Reading ../../trec_runs/215_neutral_queries/bert_mini/ranked_list_original.trec
+42435 lines read. Number of queries: 215
+Reading document neutrality scores ...
+Reading ../../trec_runs/215_neutral_queries/bert_mini/ranked_list_original.trec
+42435 lines read. Number of queries: 215
+Reading document neutrality scores ...
+Reading document neutrality scores ... done!
+Reading ../../trec_runs/215_neutral_queries/bert_mini/ranked_list_fairness_aware.trec
+43000 lines read. Number of queries: 215
+
+*** Ranker-agnostic fairness metrics for all documents in collection ***
+FaiRR_5 All: 2.753315406644946
+FaiRR_10 All: 4.24284394735604
+FaiRR_20 All: 6.574308349315866
+FaiRR_50 All: 12.044096501611563
+NFaiRR_5 All: 0.9344709458848461
+NFaiRR_10 All: 0.9387775301249777
+NFaiRR_20 All: 0.947383835445966
+NFaiRR_50 All: 0.9695138847636303
+
+*** Ranker-agnostic fairness metrics for the documents taken from ../../trec_runs/215_neutral_queries/bert_mini/ranked_list_original.trec ***
+FaiRR_5 All: 2.645547200550891
+FaiRR_10 All: 4.076773732574236
+FaiRR_20 All: 6.316981703990374
+FaiRR_50 All: 11.572675511895023
+NFaiRR_5 All: 0.8977326094858584
+NFaiRR_10 All: 0.9004640423728696
+NFaiRR_20 All: 0.9061552753596619
+NFaiRR_50 All: 0.9213242226831204
+
+*** Fairness metrics of the TREC run file ../../trec_runs/215_neutral_queries/bert_mini/ranked_list_fairness_aware.trec ***
+FaiRR_5 All: 2.8646991587300468
+FaiRR_10 All: 4.3996933809217325
+FaiRR_20 All: 6.7962936293492335
+FaiRR_50 All: 12.393776949976356
+NFaiRR_5 All: 0.9719058321615875
+NFaiRR_10 All: 0.9715197566742279
+NFaiRR_20 All: 0.9761466744993854
+NFaiRR_50 All: 0.9940970442141216

@@ -1,0 +1,36 @@
+Reading ../../trec_runs/215_neutral_queries/electra_base/ranked_list_original.trec
+43000 lines read. Number of queries: 215
+Reading document neutrality scores ...
+Reading document neutrality scores ... done!
+Reading ../../trec_runs/215_neutral_queries/electra_base/ranked_list_fairness_aware.trec
+43000 lines read. Number of queries: 215
+
+*** Ranker-agnostic fairness metrics for all documents in collection ***
+FaiRR_5 All: 2.753315406644946
+FaiRR_10 All: 4.24284394735604
+FaiRR_20 All: 6.574308349315866
+FaiRR_50 All: 12.044096501611563
+NFaiRR_5 All: 0.9338150185007096
+NFaiRR_10 All: 0.9338150185007096
+NFaiRR_20 All: 0.9338150185007096
+NFaiRR_50 All: 0.9338150185007096
+
+*** Ranker-agnostic fairness metrics for the documents taken from ../../trec_runs/215_neutral_queries/electra_base/ranked_list_original.trec ***
+FaiRR_5 All: 2.666422729761343
+FaiRR_10 All: 4.108942808643276
+FaiRR_20 All: 6.366827851530695
+FaiRR_50 All: 11.66399337824847
+NFaiRR_5 All: 0.9043444803720929
+NFaiRR_10 All: 0.9043444803720929
+NFaiRR_20 All: 0.9043444803720929
+NFaiRR_50 All: 0.9043444803720929
+
+*** Fairness metrics of the TREC run file ../../trec_runs/215_neutral_queries/electra_base/ranked_list_fairness_aware.trec ***
+FaiRR_5 All: 2.8307238117176943
+FaiRR_10 All: 4.349475589486847
+FaiRR_20 All: 6.719844581368589
+FaiRR_50 All: 12.232356277264042
+NFaiRR_5 All: 0.9600688690550865
+NFaiRR_10 All: 0.9572837649605439
+NFaiRR_20 All: 0.9544869906696117
+NFaiRR_50 All: 0.9484113650062643
