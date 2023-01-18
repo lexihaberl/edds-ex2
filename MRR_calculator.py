@@ -20,7 +20,6 @@ def main():
         if qid not in qrel:
             qrel[qid] = {}
         qrel[qid][did] = int(relevance)
-    print(len(qrel))
     # qrel = {}
     # with open(args.qrels, 'r') as f_qrel:
     #     for line in f_qrel:
@@ -31,14 +30,17 @@ def main():
     run = {}
     with open(args.run, 'r') as f_run:
         for line in f_run:
-            #qid, _, did, _, _, _ = line.strip().split()
-            qid, did, _ = line.strip().split()
+            vals = line.strip().split()
+            if len(vals) == 6:
+                qid, _, did, _, _, _ = line.strip().split()
+            elif len(vals) == 3:
+                qid, did, _ = line.strip().split()
             if qid not in run: 
                 run[qid] = []
             run[qid].append(did)
     if (len(args.result) != 0):
         myfile = open(args.result, "w") 
-    print(len(run))
+
     mrr = 0.0
     for qid in run:
         rr = 0.0
