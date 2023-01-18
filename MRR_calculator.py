@@ -1,9 +1,10 @@
 import argparse
+import ir_datasets
 
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-qrels', type=str, default='')
+    #parser.add_argument('-qrels', type=str, default='')
     parser.add_argument('-run', type=str, default='')
     parser.add_argument('-metric', type=str, default='mrr_cut_10')
     parser.add_argument('-result', type=str, default='')
@@ -11,24 +12,33 @@ def main():
 
     metric = args.metric
     k = int(metric.split('_')[-1])
-    
-    qrel = {}
-    with open(args.qrels, 'r') as f_qrel:
-        for line in f_qrel:
-            qid, _, did, label = line.strip().split()
-            if qid not in qrel:
-                qrel[qid] = {}
-            qrel[qid][did] = int(label)
 
+    dataset = ir_datasets.load("msmarco-passage/dev/judged")
+    qrel = {}
+    for qrel_vals in dataset.qrels_iter():
+        qid, did, relevance, label = qrel_vals
+        if qid not in qrel:
+            qrel[qid] = {}
+        qrel[qid][did] = int(relevance)
+    print(len(qrel))
+    # qrel = {}
+    # with open(args.qrels, 'r') as f_qrel:
+    #     for line in f_qrel:
+    #         qid, _, did, label = line.strip().split()
+    #         if qid not in qrel:
+    #             qrel[qid] = {}
+    #         qrel[qid][did] = int(label)
     run = {}
     with open(args.run, 'r') as f_run:
         for line in f_run:
-            qid, _, did, _, _, _ = line.strip().split()
+            #qid, _, did, _, _, _ = line.strip().split()
+            qid, did, _ = line.strip().split()
             if qid not in run: 
                 run[qid] = []
             run[qid].append(did)
     if (len(args.result) != 0):
         myfile = open(args.result, "w") 
+    print(len(run))
     mrr = 0.0
     for qid in run:
         rr = 0.0

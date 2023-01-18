@@ -1,9 +1,10 @@
 import collections
 import numpy as np
 import pickle
+import ir_datasets
 
-collection_path = "collection.tsv" #path to MSMARCO collection
-wordlist_path = "resources/wordlist_gender_representative.txt.csv"
+dataset = ir_datasets.load("msmarco-passage/dev/small")
+wordlist_path = "resources/wordlist_gender_representative.txt"
 
 docs_bias_save_paths = {'tc':"data/msmarco_passage_docs_bias_tc.pkl",
                         'bool':"data/msmarco_passage_docs_bias_bool.pkl",
@@ -51,23 +52,21 @@ def get_bias(tokens):
 
 docs_bias = {'tc':{}, 'tf':{}, 'bool':{}}
 empty_cnt = 0
-with open(collection_path) as fr:
-    for i, line in enumerate(fr):
-        vals = line.strip().split('\t')
-        docid = int(vals[0])
-        if len(vals) == 2:
-            _text = vals[1]
-        else:
-            _text = ""
-            empty_cnt += 1
+for i, vals in enumerate(dataset.docs_iter()):
+    docid = int(vals[0])
+    if len(vals) == 2:
+        _text = vals[1]
+    else:
+        _text = ""
+        empty_cnt += 1
+    
+    _res = get_bias(get_tokens(_text))
+    docs_bias['tc'][docid] = _res[0]
+    docs_bias['tf'][docid] = _res[1]
+    docs_bias['bool'][docid] = _res[2]
         
-        _res = get_bias(get_tokens(_text))
-        docs_bias['tc'][docid] = _res[0]
-        docs_bias['tf'][docid] = _res[1]
-        docs_bias['bool'][docid] = _res[2]
-            
-        if i % 1000000 == 0:
-            print (i)
+    if i % 1000000 == 0:
+        print (i)
             
 print ('done!')
 print ('number of skipped documents: %d' % empty_cnt)
@@ -77,3 +76,4 @@ for _method in docs_bias:
     print (_method)
     with open(docs_bias_save_paths[_method], 'wb') as fw:
         pickle.dump(docs_bias[_method], fw)
+    print (_method + ' done')

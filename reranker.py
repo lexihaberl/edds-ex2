@@ -7,35 +7,43 @@ import os
 from tqdm import tqdm
 from sentence_transformers import CrossEncoder
 import argparse
+import ir_datasets
 
-
+ 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-checkpoint', type=str, required=True)
+    parser.add_argument('-checkpoint', type=str, required=False)
     parser.add_argument('-queries', type=str, default='', required=True)
     parser.add_argument('-run', type=str, default='', required=True)
     parser.add_argument('-res', type=str, default='', required=True)
 
     args = parser.parse_args()
+    print('start model loading')
+    model_name = 'Models/bert_mini/'
+    model = CrossEncoder(model_name, num_labels=1, max_length=512)
+    print('end model loading')
 
-    model_name = args.checkpoint
-    model = CrossEncoder(model_name, max_length=512)
 
-    data_folder = "/msmarco-data/"
-    collection_filepath = os.path.join(data_folder, 'collection.tsv')
+    dataset = ir_datasets.load("msmarco-passage/dev/small")
     corpus = {}
-    with open(collection_filepath, 'r', encoding='utf8') as fIn:
-        for line in fIn:
-            pid, passage = line.strip().split("\t")
-            corpus[pid] = passage
-
-
+    print('start dataset loading')
+    for doc in dataset.docs_iter():
+        pid, passage = doc
+        corpus[pid] = passage
+    # data_folder = "msmarco-data/"
+    # collection_filepath = os.path.join(data_folder, 'collection.tsv')
+    # corpus = {}
+    # with open(collection_filepath, 'r', encoding='utf8') as fIn:
+    #     for line in fIn:
+    #         pid, passage = line.strip().split("\t")
+    #         corpus[pid] = passage
     queries_filepath = args.queries
     queries = {}
     with open(queries_filepath, 'r', encoding='utf8') as fIn:
         for line in fIn:
             qid, query = line.strip().split("\t")
             queries[qid] = query
+    print('done query loading')
 
     if '.tsv' in args.run:
         run_dev_small = pd.read_csv(args.run, sep = "\t", names = ['qid', 'pid', 'rank'])
@@ -43,6 +51,7 @@ def main():
         run_dev_small = pd.read_csv(args.run, sep = " ", names = ['qid', 'q0', 'pid', 'rank', 'score', 'ranker'])
         run_dev_small.drop(columns = ['q0', 'score', 'ranker'], inplace = True)
 
+    print('done run loading')
     grps = run_dev_small.groupby('qid')
 
     reranked_run = []
@@ -57,6 +66,7 @@ def main():
         score = model.predict(list_of_docs).tolist()
         scores.extend(score)
 
+    print('done reranked loading')
 
     reranked_run = pd.DataFrame(reranked_run, columns = ['qid', 'pid'])
     reranked_run['score'] = scores

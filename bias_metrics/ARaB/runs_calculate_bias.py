@@ -10,12 +10,14 @@ docs_bias_paths = {'tc':"data/msmarco_passage_docs_bias_tc.pkl",
 
 at_ranklist = [5, 10, 20, 30, 50, 100]
 
-root_path = "../../trec_runs/215_neutral_queries/bert_base_uncased/"
+root_path = "../../trec_runs/215_neutral_queries/bert_mini/"
 # the path of these run files should be set
 experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
                 'run_file_unbiased': root_path + 'ranked_list_fairness_aware.trec',
                }
-
+# experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
+#                 'run_file_unbiased': "../../res/reranks.csv",
+#                }
 
 #Loading saved document bias values
 docs_bias = {}
@@ -54,6 +56,18 @@ for exp_name in experiments:
                     qryid_cur = qryid
                 for _method in docs_bias_paths:
                     runs_docs_bias[exp_name][_method][qryid].append(docs_bias[_method][docid])
+            else:
+                vals = line.strip().split('\t')
+                if len(vals) == 3:
+                    qryid = int(vals[0])
+                    docid = int(vals[1])
+                    
+                    if qryid != qryid_cur:
+                        for _method in docs_bias_paths:
+                            runs_docs_bias[exp_name][_method][qryid] = []
+                        qryid_cur = qryid
+                    for _method in docs_bias_paths:
+                        runs_docs_bias[exp_name][_method][qryid].append(docs_bias[_method][docid])
       
     for _method in docs_bias_paths:
         print (_method, len(runs_docs_bias[exp_name][_method].keys()))

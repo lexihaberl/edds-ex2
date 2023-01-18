@@ -178,6 +178,16 @@ class FaiRRMetricHelper:
 
                     if len(retrievalresults[_qryid]) < cut_off:
                         retrievalresults[_qryid].append(_docid)
+                elif len(vals) == 3:
+                    _qryid = int(vals[0].strip())
+                    _docid = int(vals[1].strip())
+                    
+                    if _qryid != qryid_cur:
+                        retrievalresults[_qryid] = []
+                        qryid_cur = _qryid
+
+                    if len(retrievalresults[_qryid]) < cut_off:
+                        retrievalresults[_qryid].append(_docid)
                 else:
                     pass
 

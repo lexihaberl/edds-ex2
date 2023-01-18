@@ -1,0 +1,8 @@
+training_sets
+Models
+dev_small_run_files
+bias_metrics/NFaiRR/processed
+bias_metrics/ARaB/data
+res
+
+*.pyc
