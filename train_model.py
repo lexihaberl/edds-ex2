@@ -3,12 +3,15 @@ from sentence_transformers import LoggingHandler, util
 from sentence_transformers.cross_encoder import CrossEncoder
 from sentence_transformers.cross_encoder.evaluation import CERerankingEvaluator
 from sentence_transformers import InputExample
+import rank_bm25
+
 import logging
 from datetime import datetime
 import gzip
 import os
 import tarfile
 import tqdm
+import os
 
 #### Just some code to print debug information to stdout
 logging.basicConfig(format='%(asctime)s - %(message)s',
@@ -23,6 +26,10 @@ model_name = 'distilroberta-base'
 train_batch_size = 32
 num_epochs = 1
 model_save_path = 'output/training_ms-marco_cross-encoder-'+model_name.replace("/", "-")+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+# Negative sampling 
+Lambda = 0.6
+N = 20
 
 
 # We train the network with as a binary label task
@@ -56,6 +63,7 @@ if not os.path.exists(collection_filepath):
     with tarfile.open(tar_filepath, "r:gz") as tar:
         tar.extractall(path=data_folder)
 
+
 with open(collection_filepath, 'r', encoding='utf8') as fIn:
     for line in fIn:
         pid, passage = line.strip().split("\t")
@@ -74,7 +82,6 @@ if not os.path.exists(queries_filepath):
     with tarfile.open(tar_filepath, "r:gz") as tar:
         tar.extractall(path=data_folder)
 
-
 with open(queries_filepath, 'r', encoding='utf8') as fIn:
     for line in fIn:
         qid, query = line.strip().split("\t")
@@ -90,6 +97,8 @@ dev_samples = {}
 # Each query has at least one relevant and up to 200 irrelevant (negative) passages
 num_dev_queries = 200
 num_max_dev_negatives = 200
+
+
 
 # msmarco-qidpidtriples.rnd-shuf.train-eval.tsv.gz and msmarco-qidpidtriples.rnd-shuf.train.tsv.gz is a randomly
 # shuffled version of qidpidtriples.train.full.2.tsv.gz from the MS Marco website
@@ -120,6 +129,7 @@ if not os.path.exists(train_filepath):
     util.http_get('https://sbert.net/datasets/msmarco-qidpidtriples.rnd-shuf.train.tsv.gz', train_filepath)
 
 cnt = 0
+
 with gzip.open(train_filepath, 'rt') as fIn:
     for line in tqdm.tqdm(fIn, unit_scale=True):
         qid, pos_id, neg_id = line.strip().split()
@@ -141,11 +151,32 @@ with gzip.open(train_filepath, 'rt') as fIn:
         if cnt >= max_train_samples:
             break
 
+# Negative sampling stragegy
+negative_sampling = []
+
+for sample in train_samples:
+    # appy BM25 to get D^M_q
+    bm25 = rank_bm25.BM25(sample)
+    
+
+    # Compute the bias with TFARaB and order the documents
+    
+    # Order the documents accordingly to their bias
+    
+    # NS_bias select the top lambda * N 
+    
+    # NS_rnd select randomply the remaining documents
+
+    # NS = NS_bias + NS_rnd
+
+    # add NS to negative sampling
+
 # We create a DataLoader to load our train samples
 train_dataloader = DataLoader(train_samples, shuffle=True, batch_size=train_batch_size)
 
 # We add an evaluator, which evaluates the performance during training
 # It performs a classification task and measures scores like F1 (finding relevant passages) and Average Precision
+
 evaluator = CERerankingEvaluator(dev_samples, name='train-eval')
 
 # Configure the training
