@@ -1,0 +1,36 @@
+Reading ../../trec_runs/1765_neutral_queries/bert_tiny/ranked_list_original.trec
+353000 lines read. Number of queries: 1765
+Reading document neutrality scores ...
+Reading document neutrality scores ... done!
+Reading ../../trec_runs/1765_neutral_queries/bert_tiny/ranked_list_original.trec
+353000 lines read. Number of queries: 1765
+
+*** Ranker-agnostic fairness metrics for all documents in collection ***
+FaiRR_5 All: 2.753315406644946
+FaiRR_10 All: 4.24284394735604
+FaiRR_20 All: 6.574308349315866
+FaiRR_50 All: 12.044096501611563
+NFaiRR_5 All: 0.9338150185007095
+NFaiRR_10 All: 0.9338150185007095
+NFaiRR_20 All: 0.9338184626438933
+NFaiRR_50 All: 0.9341073445708141
+
+*** Ranker-agnostic fairness metrics for the documents taken from ../../trec_runs/1765_neutral_queries/bert_tiny/ranked_list_original.trec ***
+FaiRR_5 All: 2.453247993908616
+FaiRR_10 All: 3.780441709365258
+FaiRR_20 All: 5.857813721730158
+FaiRR_50 All: 10.731482310275904
+NFaiRR_5 All: 0.8320440932011332
+NFaiRR_10 All: 0.8320440932011332
+NFaiRR_20 All: 0.8320446540053821
+NFaiRR_50 All: 0.8321010883337122
+
+*** Fairness metrics of the TREC run file ../../trec_runs/1765_neutral_queries/bert_tiny/ranked_list_original.trec ***
+FaiRR_5 All: 2.2861127139157484
+FaiRR_10 All: 3.550955562436099
+FaiRR_20 All: 5.546568655686409
+FaiRR_50 All: 10.333419493161315
+NFaiRR_5 All: 0.7753584573302889
+NFaiRR_10 All: 0.7815360817825541
+NFaiRR_20 All: 0.7878355356035721
+NFaiRR_50 All: 0.8012350050596657

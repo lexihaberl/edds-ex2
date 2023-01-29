@@ -1,0 +1,41 @@
+data/run_file_biased_run_bias_tf_ARaB.pkl
+data/run_file_biased_run_bias_bool_ARaB.pkl
+data/run_file_unbiased_run_bias_tf_ARaB.pkl
+data/run_file_unbiased_run_bias_bool_ARaB.pkl
+ARaB
+          run_file_biased	 5    tf	0.048469	0.118664	0.167133
+        run_file_unbiased	 5    tf	0.015522	0.055019	0.070541
+          run_file_biased	 5  bool	0.037798	0.112372	0.150171
+        run_file_unbiased	 5  bool	0.012946	0.068543	0.081488
+
+==========
+          run_file_biased	10    tf	0.038181	0.118847	0.157027
+        run_file_unbiased	10    tf	0.014974	0.061217	0.076192
+          run_file_biased	10  bool	0.028990	0.115175	0.144165
+        run_file_unbiased	10  bool	0.013881	0.073128	0.087010
+
+==========
+          run_file_biased	20    tf	0.031910	0.118159	0.150069
+        run_file_unbiased	20    tf	0.018724	0.066888	0.085612
+          run_file_biased	20  bool	0.025907	0.116067	0.141974
+        run_file_unbiased	20  bool	0.017324	0.078293	0.095617
+
+==========
+          run_file_biased	30    tf	0.029264	0.116938	0.146202
+        run_file_unbiased	30    tf	0.020658	0.068132	0.088789
+          run_file_biased	30  bool	0.024782	0.115340	0.140123
+        run_file_unbiased	30  bool	0.019415	0.079035	0.098451
+
+==========
+          run_file_biased	50    tf	0.027718	0.114485	0.142203
+        run_file_unbiased	50    tf	0.021507	0.068830	0.090337
+          run_file_biased	50  bool	0.024580	0.113476	0.138055
+        run_file_unbiased	50  bool	0.020676	0.078903	0.099579
+
+==========
+          run_file_biased	100    tf	0.029297	0.109562	0.138859
+        run_file_unbiased	100    tf	0.020879	0.070669	0.091548
+          run_file_biased	100  bool	0.026496	0.109211	0.135707
+        run_file_unbiased	100  bool	0.020836	0.079547	0.100383
+
+==========
