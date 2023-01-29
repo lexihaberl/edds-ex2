@@ -10,69 +10,61 @@ docs_bias_paths = {'tc':"data/msmarco_passage_docs_bias_tc.pkl",
 
 at_ranklist = [5, 10, 20, 30, 50, 100]
 
-root_path = "../../trec_runs/215_neutral_queries/bert_mini/"
+root_path = "../../trec_runs/215_neutral_queries/bert_base_uncased/"
 # the path of these run files should be set
 experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
                 'run_file_unbiased': root_path + 'ranked_list_fairness_aware.trec',
                }
-# experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
-#                 'run_file_unbiased': "../../res/reranks.csv",
-#                }
+experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
+                 'run_file_unbiased': "../../res/reranks_bert_base.tsv",
+                }
 
 #Loading saved document bias values
 docs_bias = {}
+
+runs_docs_bias = {}
+for exp_name in experiments:
+    runs_docs_bias[exp_name] = {}
+    
 for _method in docs_bias_paths:
     print (_method)
     with open(docs_bias_paths[_method], 'rb') as fr:
         docs_bias[_method] = pickle.load(fr)
 
-#Loading run files
-runs_docs_bias = {}
-    
-print ('reading run')
-for exp_name in experiments:
-    print (exp_name)
+    for exp_name in experiments:
+        print (exp_name)
 
-    run_path = experiments[exp_name]
-    runs_docs_bias[exp_name] = {}
-    
-    for _method in docs_bias_paths:
+        run_path = experiments[exp_name]
+        
         runs_docs_bias[exp_name][_method] = {}
-    
-    with open(run_path) as fr:
-        qryid_cur = 0
-        for i, line in enumerate(fr):
-            if (i % 5000000 == 0) and (i != 0):
-                print ('line', i)
+        
+        with open(run_path) as fr:
+            qryid_cur = 0
+            for i, line in enumerate(fr):
+                if (i % 5000000 == 0) and (i != 0):
+                    print ('line', i)
 
-            vals = line.strip().split(' ')
-            if len(vals) == 6:
-                qryid = int(vals[0])
-                docid = int(vals[2])
-                
-                if qryid != qryid_cur:
-                    for _method in docs_bias_paths:
-                        runs_docs_bias[exp_name][_method][qryid] = []
-                    qryid_cur = qryid
-                for _method in docs_bias_paths:
-                    runs_docs_bias[exp_name][_method][qryid].append(docs_bias[_method][docid])
-            else:
-                vals = line.strip().split('\t')
-                if len(vals) == 3:
+                vals = line.strip().split(' ')
+                if len(vals) == 6:
                     qryid = int(vals[0])
-                    docid = int(vals[1])
+                    docid = int(vals[2])
                     
                     if qryid != qryid_cur:
-                        for _method in docs_bias_paths:
-                            runs_docs_bias[exp_name][_method][qryid] = []
+                        runs_docs_bias[exp_name][_method][qryid] = []
                         qryid_cur = qryid
-                    for _method in docs_bias_paths:
+                    runs_docs_bias[exp_name][_method][qryid].append(docs_bias[_method][docid])
+                else:
+                    vals = line.strip().split('\t')
+                    if len(vals) == 3:
+                        qryid = int(vals[0])
+                        docid = int(vals[1])
+                        
+                        if qryid != qryid_cur:
+                            runs_docs_bias[exp_name][_method][qryid] = []
+                            qryid_cur = qryid
                         runs_docs_bias[exp_name][_method][qryid].append(docs_bias[_method][docid])
-      
-    for _method in docs_bias_paths:
-        print (_method, len(runs_docs_bias[exp_name][_method].keys()))
-    print ()
-print ('done!')
+    docs_bias[_method] = None
+    print ('done!')
 
 def calc_RaB_q(bias_list, at_rank):
     bias_val = np.mean([x[0] for x in bias_list[:at_rank]])
