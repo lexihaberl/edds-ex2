@@ -19,7 +19,10 @@ def main():
 
     args = parser.parse_args()
     print('start model loading')
-    model_name = 'Models/bert_mini/'
+    if args.checkpoint is not None:
+        model_name = args.checkpoint
+    else:
+        model_name = 'Models/bert_mini/'
     model = CrossEncoder(model_name, num_labels=1, max_length=512)
     print('end model loading')
 
