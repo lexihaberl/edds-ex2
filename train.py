@@ -63,8 +63,9 @@ collection_filepath = os.path.join(data_folder, 'collection.tsv')
 if not os.path.exists(collection_filepath):
     tar_filepath = os.path.join(data_folder, 'collection.tar.gz')
     if not os.path.exists(tar_filepath):
-        logging.info("Download collection.tar.gz")
-        util.http_get('https://msmarco.blob.core.windows.net/msmarcoranking/collection.tar.gz', tar_filepath)
+        logging.warning("Did not find collection.tar.gz")
+        # util.http_get('https://msmarco.blob.core.windows.net/msmarcoranking/collection.tar.gz', tar_filepath)
+        exit()
 
     with tarfile.open(tar_filepath, "r:gz") as tar:
         tar.extractall(path=data_folder)
@@ -135,6 +136,8 @@ with gzip.open(train_eval_filepath, 'rt') as fIn:
 #     util.http_get('https://sbert.net/datasets/msmarco-qidpidtriples.rnd-shuf.train.tsv.gz', train_filepath)
 
 cnt = 0
+cnt_pos = 0
+cnt_neg = 0
 with open(train_filepath, 'rt') as fIn:
     for line in tqdm.tqdm(fIn, unit_scale=True):
         qid, pos_id, neg_id = line.strip().split()
@@ -146,16 +149,18 @@ with open(train_filepath, 'rt') as fIn:
         if (cnt % (pos_neg_ration+1)) == 0:
             passage = corpus[pos_id]
             label = 1
+            cnt_pos += 1
         else:
             passage = corpus[neg_id]
             label = 0
+            cnt_neg += 1
 
         train_samples.append(InputExample(texts=[query, passage], label=label))
         cnt += 1
 
         if cnt >= max_train_samples:
             break
-
+print(cnt, cnt_neg, cnt_pos)
 # We create a DataLoader to load our train samples
 train_dataloader = DataLoader(train_samples, shuffle=True, batch_size=train_batch_size)
 
