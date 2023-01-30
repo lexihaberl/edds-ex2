@@ -4,5 +4,8 @@ dev_small_run_files
 bias_metrics/NFaiRR/processed
 bias_metrics/ARaB/data
 res
+msmarco-data
+output
+TrainingSets
 
 *.pyc

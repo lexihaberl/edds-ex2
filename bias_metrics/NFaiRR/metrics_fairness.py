@@ -4,6 +4,9 @@ import pickle
 import pdb
 import itertools
 import copy
+import os
+
+
 
 class FaiRRMetric:
     
@@ -208,6 +211,10 @@ if __name__ == "__main__":
     #
     # config
     #
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--collection-neutrality-path', action='store', dest='collection_neutrality_path',
@@ -224,8 +231,11 @@ if __name__ == "__main__":
                         help='Print the results per query in addition to the average results')
     parser.add_argument('--ignore-runfile', action='store_true', dest='ignore_runfile',
                         help='Ignores run file and only calculates the ranker-agnostic metrics')
+    parser.add_argument('--experiment', type=str, default='', required=True)
     args = parser.parse_args()
     
+    args.runfile = '../../'+args.runfile
+
     _metric_helper = FaiRRMetricHelper()
     _background_doc_set = _metric_helper.read_documentset_from_retrievalresults(args.backgroundrunfile)
     print ("Reading document neutrality scores ...")
@@ -260,23 +270,29 @@ if __name__ == "__main__":
     print ()
     
     if not args.ignore_runfile:
-        print ("*** Fairness metrics of the TREC run file %s ***" % args.runfile)
-        _metric_res = _fairr_metric.calc_FaiRR_retrievalresults(_retrivalresults)
-        _ms = list(_metric_res['metrics_avg'].keys())
-        _ms.sort()
-        if args.print_qry_results:
+        with open('../../res/metrics_'+args.experiment[19:-5] + '.txt', 'a+') as fss:
+            fss.write("*** Fairness metrics of the TREC run file %s ***" % args.runfile)
+            fss.write('\n')
+            print ("*** Fairness metrics of the TREC run file %s ***" % args.runfile)
+            _metric_res = _fairr_metric.calc_FaiRR_retrievalresults(_retrivalresults)
+            _ms = list(_metric_res['metrics_avg'].keys())
+            _ms.sort()
+            if args.print_qry_results:
+                for _m in _ms:
+                    _cutoffs = list(_metric_res['metrics_perq'][_m].keys())
+                    _cutoffs.sort()
+                    for _cutoff in _cutoffs:
+                        _qrys = list(_metric_res['metrics_perq'][_m][_cutoff].keys())
+                        _qrys.sort()
+                        for _qry in _qrys:
+                            print ("%s_%d %d:" % (_m, _cutoff, _qry), _metric_res['metrics_perq'][_m][_cutoff][_qry])
+                            fss.write("%s_%d %d:" % (_m, _cutoff, _qry), _metric_res['metrics_perq'][_m][_cutoff][_qry] + '\n')
             for _m in _ms:
-                _cutoffs = list(_metric_res['metrics_perq'][_m].keys())
+                _cutoffs = list(_metric_res['metrics_avg'][_m].keys())
                 _cutoffs.sort()
                 for _cutoff in _cutoffs:
-                    _qrys = list(_metric_res['metrics_perq'][_m][_cutoff].keys())
-                    _qrys.sort()
-                    for _qry in _qrys:
-                        print ("%s_%d %d:" % (_m, _cutoff, _qry), _metric_res['metrics_perq'][_m][_cutoff][_qry])
-
-        for _m in _ms:
-            _cutoffs = list(_metric_res['metrics_avg'][_m].keys())
-            _cutoffs.sort()
-            for _cutoff in _cutoffs:
-                print ("%s_%d All:" % (_m, _cutoff), _metric_res['metrics_avg'][_m][_cutoff])
+                    print ("%s_%d All:" % (_m, _cutoff), _metric_res['metrics_avg'][_m][_cutoff])
+                    s = str((_m, _cutoff)) + ' All:' + str(_metric_res['metrics_avg'][_m][_cutoff])
+                    fss.write(s)
+                    fss.write('\n')
         

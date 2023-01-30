@@ -22,7 +22,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
 
 
 #First, we define the transformer model we want to fine-tune
-model_name = 'distilroberta-base'
+model_name = 'bert_tiny'
 train_batch_size = 32
 num_epochs = 1
 model_save_path = 'output/training_ms-marco_cross-encoder-'+model_name.replace("/", "-")+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")

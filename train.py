@@ -31,11 +31,13 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
 
 
 #First, we define the transformer model we want to fine-tune
-model_name = 'distilroberta-base'
-train_batch_size = 32
+model_name = 'prajjwal1/bert-tiny'
+train_batch_size = 64
 num_epochs = 1
-#model_save_path = 'output/training_ms-marco_cross-encoder-'+model_name.replace("/", "-")+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-model_save_path = '/home/david/TU/EDDS/Ex2/edds-ex2/files/Models/bert_tiny/bert_tiny.bin'
+model_save_path = 'output/'+model_name.replace("/", "-")+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")+'aware_05'
+#model_save_path = '/home/dalina/David/Uni/edds/edds-ex2/files/Models/bert_tiny/bert_tiny.bin'
+
+train_filepath = '/home/dalina/David/Uni/edds/edds-ex2/TrainingSets/training_set_60perc_05.tsv'
 
 # We train the network with as a binary label task
 # Given [query, passage] is the label 0 = irrelevant or 1 = relevant?
@@ -127,7 +129,7 @@ with gzip.open(train_eval_filepath, 'rt') as fIn:
 
 # Read our training file
 
-train_filepath = '/home/david/TU/EDDS/Ex2/edds-ex2/files/training_sets/fairness_aware_training_set.tsv'
+
 
 # train_filepath = os.path.join(data_folder, 'msmarco-qidpidtriples.rnd-shuf.train.tsv.gz')
 # if not os.path.exists(train_filepath):

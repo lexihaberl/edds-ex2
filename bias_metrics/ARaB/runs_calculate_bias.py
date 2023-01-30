@@ -2,6 +2,19 @@ import collections
 from re import M
 import numpy as np
 import pickle
+import argparse
+import os
+
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-root_path', type=str, required=False)
+parser.add_argument('-experiment', type=str, default='', required=True)
+
+args = parser.parse_args()
 
 
 docs_bias_paths = {'tc':"data/msmarco_passage_docs_bias_tc.pkl",
@@ -10,14 +23,16 @@ docs_bias_paths = {'tc':"data/msmarco_passage_docs_bias_tc.pkl",
 
 at_ranklist = [5, 10, 20, 30, 50, 100]
 
-root_path = "../../trec_runs/215_neutral_queries/bert_base_uncased/"
+root_path = args.root_path
 # the path of these run files should be set
-experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
-                'run_file_unbiased': root_path + 'ranked_list_fairness_aware.trec',
-               }
-experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
-                 'run_file_unbiased': "../../res/reranks_bert_base.tsv",
-                }
+# experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
+#                 'run_file_unbiased': root_path + 'ranked_list_fairness_aware.trec',
+#               }
+# experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
+#                  'run_file_unbiased': "../../res/reranker_aware_01.trec",
+#                 }
+
+experiments = {'exp': args.experiment}
 
 #Loading saved document bias values
 docs_bias = {}
@@ -102,6 +117,8 @@ qry_bias_RaB = {}
 qry_bias_ARaB = {}
 
 print('calculating ranking bias')
+
+
 
 for exp_name in experiments:
     print(exp_name)

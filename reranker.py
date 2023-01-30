@@ -19,24 +19,27 @@ def main():
 
     args = parser.parse_args()
     print('start model loading')
-    model_name = 'Models/bert_mini/'
+    if args.checkpoint is not None:
+        model_name = args.checkpoint
+    else:
+        model_name = 'Models/bert_mini/'
     model = CrossEncoder(model_name, num_labels=1, max_length=512)
     print('end model loading')
 
 
-    dataset = ir_datasets.load("msmarco-passage/dev/small")
-    corpus = {}
-    print('start dataset loading')
-    for doc in dataset.docs_iter():
-        pid, passage = doc
-        corpus[pid] = passage
-    # data_folder = "msmarco-data/"
-    # collection_filepath = os.path.join(data_folder, 'collection.tsv')
+    # dataset = ir_datasets.load("msmarco-passage/dev/small")
     # corpus = {}
-    # with open(collection_filepath, 'r', encoding='utf8') as fIn:
-    #     for line in fIn:
-    #         pid, passage = line.strip().split("\t")
-    #         corpus[pid] = passage
+    # print('start dataset loading')
+    # for doc in dataset.docs_iter():
+    #     pid, passage = doc
+    #     corpus[pid] = passage
+    data_folder = "msmarco-data/"
+    collection_filepath = os.path.join(data_folder, 'collection.tsv')
+    corpus = {}
+    with open(collection_filepath, 'r', encoding='utf8') as fIn:
+        for line in fIn:
+            pid, passage = line.strip().split("\t")
+            corpus[pid] = passage
     queries_filepath = args.queries
     queries = {}
     with open(queries_filepath, 'r', encoding='utf8') as fIn:

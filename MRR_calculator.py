@@ -56,6 +56,9 @@ def main():
         myfile.write(str("total") + "\t" + str(mrr) + "\t")
         myfile.close()
     print("MRR@10: ", mrr)
+    
+    with open('res/metrics_'+args.run[13:-5] + '.txt', 'a+') as fss:
+        fss.write("MRR@10: " + str(mrr)+'\n')
 
 
 if __name__ == "__main__":
