@@ -5,6 +5,8 @@ import pandas as pd
 
 experiments = ['run_file_biased', 'run_file_unbiased'
                ]
+experiments = ['run_file_biased'
+    ]
 
 metrics = ['ARaB']
 methods = ['tf', 'bool']
@@ -19,6 +21,7 @@ for metric in metrics:
 
 
 at_ranklist = [5, 10, 20, 30, 50, 100]
+at_ranklist = [10]
 
 qry_bias_perqry = {}
 

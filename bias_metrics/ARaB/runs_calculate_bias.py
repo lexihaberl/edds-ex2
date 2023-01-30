@@ -10,15 +10,17 @@ docs_bias_paths = {'tc':"data/msmarco_passage_docs_bias_tc.pkl",
 
 at_ranklist = [5, 10, 20, 30, 50, 100]
 
-root_path = "../../trec_runs/215_neutral_queries/bert_base_uncased/"
+root_path = "../../trec_runs/215_neutral_queries/bert_tiny/"
 # the path of these run files should be set
 experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
                 'run_file_unbiased': root_path + 'ranked_list_fairness_aware.trec',
                }
 experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
-                 'run_file_unbiased': "../../res/reranks_bert_base.tsv",
+                 'run_file_unbiased': "../../res.txt",
                 }
-
+experiments = {'run_file_biased': '../../res/bert_tiny_orig_01.tsv'
+                }
+at_ranklist = [10]
 #Loading saved document bias values
 docs_bias = {}
 
