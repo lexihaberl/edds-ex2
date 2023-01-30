@@ -3,6 +3,9 @@ import numpy as np
 import pickle
 import ir_datasets
 
+# dataset_path = '/home/dalina/David/Uni/edds/edds-ex2/msmarco-data/collection.tsv'
+# dataset = pd.read_csv(dataset_path,sep = '\t')
+
 dataset = ir_datasets.load("msmarco-passage/dev/small")
 wordlist_path = "resources/wordlist_gender_representative.txt"
 
