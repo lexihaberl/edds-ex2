@@ -5,6 +5,7 @@ from sentence_transformers.cross_encoder.evaluation import CERerankingEvaluator
 from sentence_transformers import InputExample
 from heapq import nlargest
 import logging
+import rank_bm25
 from datetime import datetime
 import gzip
 import os
