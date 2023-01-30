@@ -28,7 +28,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
 model_name = 'distilroberta-base'
 train_batch_size = 32
 num_epochs = 1
-model_save_path = 'output/training_ms-marco_cross-encoder-'+model_name.replace("/", "-")+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+model_save_path = 'training_ms-marco_cross-encoder-'+model_name.replace("/", "-")+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 # Negative sampling 
 Lambda = 0.6
@@ -39,8 +39,8 @@ N = 20
 # Given [query, passage] is the label 0 = irrelevant or 1 = relevant?
 
 # Maximal number of training samples we want to use
-max_train_samples = 2e7
-max_training_queries = 100000
+max_train_samples = 500000
+max_training_queries = 10000
 
 #We set num_labels=1, which predicts a continous score between 0 and 1
 model = CrossEncoder(model_name, num_labels=1, max_length=512)
@@ -87,7 +87,7 @@ with open(queries_filepath, 'r', encoding='utf8') as fIn:
 
 
 def rank_biased_documents(dataset, nb_samples):
-    wordlist_path = "/content/drive/MyDrive/Reproductability/edds-ex2/bias_metrics/ARaB/resources/wordlist_gender_representative.txt"
+    wordlist_path = "/home/claire/PycharmProjects/edds-ex2/bias_metrics/ARaB/resources/wordlist_gender_representative.txt"
 
     genderwords_feml = []
     genderwords_male = []
@@ -158,7 +158,16 @@ def rank_biased_documents(dataset, nb_samples):
 def negative_sampling(set_neg_id):
     Lambda = 0.6 # Value of the paper
     N = 20 # Value of the paper
-    sampling = []
+    # for k in range(500000, nb_documents, 500000):
+    #  documents = list(corpus.values())[:50000] # reduce the dataset if doesn't fit in RAM
+    #  tokenized_corpus_k = [doc.split(" ") for doc in documents]
+    #  tokenized_corpus += tokenized_corpus_k
+    # bm25 = rank_bm25.BM25Okapi(tokenized_corpus)
+    # tokenized_query = query.split(" ")
+    # scores = bm25.get_scores(tokenized_query) 
+    # ind = np.argpartition(scores, -1000)[-1000:] # n=1000 in the paper
+    # D_Mq = {str(i): corpus[str(i)] for i in ind}
+    
     D_Mq = {str(neg_id): corpus[neg_id] for neg_id in set_neg_id}
     # Compute the bias with TFARaB select the top lambda * N 
     NS_biased = rank_biased_documents(D_Mq, Lambda * N)
