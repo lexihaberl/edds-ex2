@@ -1,0 +1,15 @@
+MRR@10: 0.2293281653746771
+ARaB
+                      exp	10    tf	0.032261	0.142322	0.174583
+                      exp	10  bool	0.028236	0.135341	0.163577
+
+==========
+*** Fairness metrics of the TREC run file ../../res/reranker_mini_their_orig_dataset.trec ***
+('FaiRR', 5) All:2.5420140489759624
+('FaiRR', 10) All:3.9770726882325382
+('FaiRR', 20) All:6.247496480728474
+('FaiRR', 50) All:11.553455948651267
+('NFaiRR', 5) All:0.8621500066591035
+('NFaiRR', 10) All:0.8753209526489535
+('NFaiRR', 20) All:0.8873946477338067
+('NFaiRR', 50) All:0.8957741810681544

@@ -3,12 +3,12 @@ Models
 dev_small_run_files
 bias_metrics/NFaiRR/processed
 bias_metrics/ARaB/data
-res
 msmarco-data
 output
 TrainingSets
 bert_tiny
 bert_base
-bert_tiny_orig_*
+bert_tiny_*
+bert_mini_orig_*
 
 *.pyc
