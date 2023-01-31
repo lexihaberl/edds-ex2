@@ -7,17 +7,17 @@
 
 
 #RERANKER
-MODEL_CHECKPOINT=/home/dalina/David/Uni/edds/edds-ex2/output/prajjwal1-bert-tiny-2023-01-30_15-58-12aware_01-latest
+MODEL_CHECKPOINT=/home/dalina/David/Uni/edds/edds-ex2/output/training_ms-marco_cross-encoder-prajjwal1-bert-tiny-2023-01-29_22-33-59not_aware-latest
 QUERIES=QS2.tsv
 RUN=/home/dalina/David/Uni/edds/edds-ex2/QS2_BM25.tsv
-RERANKER=res/reranker_aware_01.trec
+RERANKER=res/reranker_tiny_not_aware_paper.trec
 
 #MMR
-MMR=res/resMrr_aware_01.txt
+MMR=res/resMrr_tiny_not_aware_paper.txt
 
 #ARaB
 ROOT_PATH="../../trec_runs/215_neutral_queries/bert_tiny/"
-EXPERIMENT="../../res/reranker_aware_01.trec"
+EXPERIMENT="../../res/reranker_tiny_not_aware_paper.trec"
 
 python3 reranker.py\
      -checkpoint $MODEL_CHECKPOINT \
