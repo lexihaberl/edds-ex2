@@ -16,6 +16,8 @@ most_biased_path = 'data/train_run_bias_tf_most_bias_test_tf.txt'
 # path to msmarco-QIDPIDTriples train file
 train_filepath = os.path.join(data_folder, 'msmarco-qidpidtriples.train.tsv.gz')
 # path to msmarco-QIDPIDTriples train-eval file
+# from https://sbert.net/datasets/msmarco-qidpidtriples.rnd-shuf.train-eval.tsv.gz
+# queries from eval file are not included in the created training set
 eval_filepath = os.path.join(data_folder, 'qidpidtriples.rnd-shuf.train-eval.tsv')
 # file for the created training set
 output_filepath = 'training_set_orig_05.tsv'
