@@ -4,23 +4,12 @@ import numpy as np
 import pickle
 import pandas as pd
 
-
-docs_bias_paths = {'tc':"data/msmarco_passage_docs_bias_tc.pkl",
-                        'bool':"data/msmarco_passage_docs_bias_bool.pkl",
-                        'tf':"data/msmarco_passage_docs_bias_tf.pkl"}
-
-at_ranklist = [5, 10, 20, 30, 50, 100]
-
-root_path = "../../trec_runs/215_neutral_queries/bert_tiny/"
-# the path of these run files should be set
-experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
-                'run_file_unbiased': root_path + 'ranked_list_fairness_aware.trec',
-               }
-experiments = {'run_file_biased': root_path + "ranked_list_original.trec",
-                 'run_file_unbiased': "../../res.txt",
-                }
-experiments = {'train': '../../anserini/runs/run.msmarco-passage.train.tsv'}
-docs_bias_paths = {'tf':"data/msmarco_passage_docs_bias_tf.pkl"}
+# path to the top-k ranked results from BM25
+experiments = {'train': 'anserini/runs/run.msmarco-passage.train.tsv'}
+# path to the pickle file which has bias values for all documents in the dataset
+docs_bias_paths = {'tf':"bias_metrics/ARaB/data/msmarco_passage_docs_bias_tf.pkl"}
+# retrieve N most biased documents for each query
+N = 20
 at_ranklist = [10]
 #Loading saved document bias values
 docs_bias = {}
@@ -56,7 +45,7 @@ for _method in docs_bias_paths:
                     docid = int(vals[1])
                     rank = int(vals[2])
                     if prev_qry_id is not None and prev_qry_id != qryid:
-                        most_biased_docs[prev_qry_id] = dict(sorted(map_of_docs.items(), key = lambda x: x[1], reverse = True)[:20])
+                        most_biased_docs[prev_qry_id] = dict(sorted(map_of_docs.items(), key = lambda x: x[1], reverse = True)[:N])
                         map_of_docs = {}
                     prev_qry_id = qryid
                     bias_metric, _, _ = docs_bias[_method][docid]

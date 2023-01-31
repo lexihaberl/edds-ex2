@@ -35,7 +35,9 @@ model_name = 'prajjwal1/bert-tiny'
 train_batch_size = 64
 num_epochs = 1
 #model_save_path = 'output/training_ms-marco_cross-encoder-'+model_name.replace("/", "-")+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+# path were model is saved to
 model_save_path = 'bert_tiny_orig_04'
+# path to training set
 train_filepath = 'training_sets/training_set_orig_04.tsv'
 
 # We train the network with as a binary label task

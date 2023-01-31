@@ -1,5 +1,22 @@
 # A Light-weight Strategy for Restraining Gender Biases in Neural Rankers
 
+
+
+## Reproducing the paper
+All [MS-Marco](https://microsoft.github.io/msmarco/Datasets.html) Datasets are from the passage ranking dataset.
+
+- Setup a conda environment with ```conda env create -f conda_env.yml``` and activate it with ```conda activate edds_ex2```.
+
+- First you need to follow the instructions from [anserini](https://github.com/castorini/anserini/blob/master/docs/experiments-msmarco-passage.md) to get the top 1000 documents for each query in the MS-MARCO [queries.train.tsv](https://msmarco.blob.core.windows.net/msmarcoranking/queries.tar.gz). You also have to get the top 200 documents for [QS2](https://github.com/CPJKU/FairnessRetrievalResults/blob/main/dataset/msmarco_passage.dev.fair.tsv) from the original paper.
+- For the following steps you should look into the files and set the paths/parameters according to your needs.
+- Afterwards you have to execute the ```bias_metrics/ARaB/documents_calculate_bias.py``` script to calculate the bias values for each document. 
+- Execute the ```get_most_biased_results.py``` script to get the most biased documents for each query, based on the absolute value of the ARaB tf metric.
+- Execute ```get_training_set.py``` to create training sets for your model.
+- Execute ```train.py``` to train the model.
+- Execute ```run.sh```. You should then get all metrics for your trained model.
+
+
+**Below you can find the original Readme**
 This repository contains the code and resources for our proposed bias-aware negative sampling strategy. Our proposed strategy is capable of decreasing the level of gender bias in neural ranking models, while maintaining a comparable level of retrieval effectiveness,and does not require any changes to the architecture or loss function of SOTA neural rankers.
 ## Example of Bias in IR
 Table 1 shows top 3 documents of the re-ranked list of documents that are ranked by the BERT model for two fairness-sensitive queries. We can observe that the third document of the first query and the second document of the second query have inclination towards male gender and represent supervisor and governor as male-oriented positions. However, these biased documents have lower position in the re-ranked list of our proposed fairness-aware version of the model. We note that these biased documents are not considered as the relevance judgment documents of these queries. Therefore, ranking these documents in a lower position would not impact on the performance of the model.
