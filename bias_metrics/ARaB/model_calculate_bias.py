@@ -30,6 +30,7 @@ for metric in metrics:
 
 
 at_ranklist = [5, 10, 20, 30, 50, 100]
+at_ranklist = [10]
 
 qry_bias_perqry = {}
 

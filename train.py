@@ -34,10 +34,9 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
 model_name = 'prajjwal1/bert-tiny'
 train_batch_size = 64
 num_epochs = 1
-model_save_path = 'output/'+model_name.replace("/", "-")+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")+'aware_05'
-#model_save_path = '/home/dalina/David/Uni/edds/edds-ex2/files/Models/bert_tiny/bert_tiny.bin'
-
-train_filepath = '/home/dalina/David/Uni/edds/edds-ex2/TrainingSets/training_set_60perc_05.tsv'
+#model_save_path = 'output/training_ms-marco_cross-encoder-'+model_name.replace("/", "-")+'-'+datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+model_save_path = 'bert_tiny_orig_04'
+train_filepath = 'training_sets/training_set_orig_04.tsv'
 
 # We train the network with as a binary label task
 # Given [query, passage] is the label 0 = irrelevant or 1 = relevant?
@@ -64,8 +63,9 @@ collection_filepath = os.path.join(data_folder, 'collection.tsv')
 if not os.path.exists(collection_filepath):
     tar_filepath = os.path.join(data_folder, 'collection.tar.gz')
     if not os.path.exists(tar_filepath):
-        logging.info("Download collection.tar.gz")
-        util.http_get('https://msmarco.blob.core.windows.net/msmarcoranking/collection.tar.gz', tar_filepath)
+        logging.warning("Did not find collection.tar.gz")
+        # util.http_get('https://msmarco.blob.core.windows.net/msmarcoranking/collection.tar.gz', tar_filepath)
+        exit()
 
     with tarfile.open(tar_filepath, "r:gz") as tar:
         tar.extractall(path=data_folder)
@@ -130,13 +130,14 @@ with gzip.open(train_eval_filepath, 'rt') as fIn:
 # Read our training file
 
 
-
 # train_filepath = os.path.join(data_folder, 'msmarco-qidpidtriples.rnd-shuf.train.tsv.gz')
 # if not os.path.exists(train_filepath):
 #     logging.info("Download "+os.path.basename(train_filepath))
 #     util.http_get('https://sbert.net/datasets/msmarco-qidpidtriples.rnd-shuf.train.tsv.gz', train_filepath)
 
 cnt = 0
+cnt_pos = 0
+cnt_neg = 0
 with open(train_filepath, 'rt') as fIn:
     for line in tqdm.tqdm(fIn, unit_scale=True):
         qid, pos_id, neg_id = line.strip().split()
@@ -148,16 +149,18 @@ with open(train_filepath, 'rt') as fIn:
         if (cnt % (pos_neg_ration+1)) == 0:
             passage = corpus[pos_id]
             label = 1
+            cnt_pos += 1
         else:
             passage = corpus[neg_id]
             label = 0
+            cnt_neg += 1
 
         train_samples.append(InputExample(texts=[query, passage], label=label))
         cnt += 1
 
         if cnt >= max_train_samples:
             break
-
+print(cnt, cnt_neg, cnt_pos)
 # We create a DataLoader to load our train samples
 train_dataloader = DataLoader(train_samples, shuffle=True, batch_size=train_batch_size)
 
