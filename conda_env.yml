@@ -5,7 +5,7 @@ dependencies:
   - python=3.8
   - pip
   - pip:
-    - sentence_transformers
-    - torch
-    - pandas
-    - ir_datasets
+    - sentence_transformers==2.2.2
+    - torch==1.13.1
+    - pandas==1.5.3
+    - ir_datasets==0.5.4      
