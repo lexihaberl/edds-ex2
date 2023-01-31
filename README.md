@@ -17,6 +17,7 @@ All [MS-Marco](https://microsoft.github.io/msmarco/Datasets.html) Datasets are f
 
 
 **Below you can find the original Readme**
+
 This repository contains the code and resources for our proposed bias-aware negative sampling strategy. Our proposed strategy is capable of decreasing the level of gender bias in neural ranking models, while maintaining a comparable level of retrieval effectiveness,and does not require any changes to the architecture or loss function of SOTA neural rankers.
 ## Example of Bias in IR
 Table 1 shows top 3 documents of the re-ranked list of documents that are ranked by the BERT model for two fairness-sensitive queries. We can observe that the third document of the first query and the second document of the second query have inclination towards male gender and represent supervisor and governor as male-oriented positions. However, these biased documents have lower position in the re-ranked list of our proposed fairness-aware version of the model. We note that these biased documents are not considered as the relevance judgment documents of these queries. Therefore, ranking these documents in a lower position would not impact on the performance of the model.
